@@ -3,8 +3,12 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 
-write.csv(dat.heatmap.randomforest.contig.genus, "dat.heatmap.randomforest.contig.genus.csv", col.names = FALSE)
-heatmap.randomforest.contig.genus <- ggplot(data = dat.heatmap.randomforest.contig.genus[grepl(pattern = "IF", x = b$PredictedVariable),], 
+### tables of heatmap and  barchart of random forest
+dat.fig7b.heatmap.randomforest.contig.genus <- read.csv("dat.fig7b.heatmap.randomforest.contig.genus.csv")
+dat.fig7b.barchart.randomforest.gene.contig.genus <- read.csv("dat.fig7b.barchart.randomforest.gene.contig.genus.csv")
+
+(fig.7b.heatmap.randomforest.contig.genus <- ggplot(data = dat.fig7b.heatmap.randomforest.contig.genus[grepl(pattern = "IF", 
+                                                                                               x = dat.fig7b.heatmap.randomforest.contig.genus$PredictedVariable),], 
                                             aes(x = factor(PredictedVariable), y = predictor, fill = IncMSE)) + geom_tile() + 
   guides(fill = guide_colorbar(title.position = "top", title.hjust = 0.5)) + 
   theme_classic()+ 
@@ -31,19 +35,19 @@ heatmap.randomforest.contig.genus <- ggplot(data = dat.heatmap.randomforest.cont
     legend.key = NULL,
     legend.position = "none",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))+
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) 
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) )
 
-hm.clean <- heatmap.randomforest.contig.genus +
+(hm.clean <- fig.7b.heatmap.randomforest.contig.genus +
   theme(axis.title.y = element_blank(), axis.text.y.left = element_blank(),
         axis.ticks.y = element_blank(), axis.title.x = element_blank(),
         axis.text.x = element_blank(), axis.ticks.x = element_blank(),
         legend.position="none")
-
-
+)
 #### barchart #####
-write.csv(dat.barchart.randomforest.contig.genus, "dat.barchart.randomforest.contig.genus.csv", col.names = FALSE)
-
-up <- ggplot(data = dat.barchart.randomforest.contig.genus, aes(x = PredictedVariable, y = r2)) + 
+(dat.fig7b.barchart.randomforest.gene.contig.genus$media <- factor(dat.fig7b.barchart.randomforest.gene.contig.genus$media, 
+                                                       levels = c("water", "sediment"))
+)
+(up <- ggplot(data = dat.fig7b.barchart.randomforest.gene.contig.genus, aes(x = PredictedVariable, y = r2)) + 
   geom_bar(stat = "identity", fill = "red") + ylab("") + 
   ggh4x::facet_grid2(cols = vars(media), scales = "free", space = "free") +
   scale_y_continuous(expand = c(0.01, 0),  limits = c(0,1))+theme_classic()+ 
@@ -54,5 +58,7 @@ up <- ggplot(data = dat.barchart.randomforest.contig.genus, aes(x = PredictedVar
         axis.ticks.x = element_blank(), #axis.text.y = element_blank(), 
         #axis.title.y = element_blank(), axis.ticks.y= element_blank(),
         legend.position="none") 
+)
 
-plot_grid( up,heatmap.randomforest.contig.genus, align = "v", nrow = 2, rel_heights = c(0.3, 1.5))
+(fig.7b <- cowplot::plot_grid( up,heatmap.randomforest.contig.genus, align = "v", nrow = 2, rel_heights = c(0.3, 1.5))
+)
