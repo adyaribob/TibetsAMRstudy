@@ -1,10 +1,11 @@
 library(ggplot2)
 
-dat.figS3.barchart.abundance.occurrence.gene.contigs
 
-barchart.percentage.neutral.contig.gene <- ggplot(data = dat.figS3.barchart.abundance.occurrence.gene.contigs,
+dat.figS3.barchart.abundance.occurrence.gene.contigs <- read.csv("dat.figS3.barchart.abundance.occurrence.gene.contigs.csv")
+
+(barchart.percentage.neutral.contig.gene <- ggplot(data = dat.figS3.barchart.abundance.occurrence.gene.contigs,
                                                   aes(x = media, y = value, fill = neutral)) + 
-  geom_bar(data = c,
+  geom_bar(data = dat.figS3.barchart.abundance.occurrence.gene.contigs,
            mapping = aes(x = media, y = value, fill = neutral), 
            stat = "identity",position = "stack")+
   theme_classic()+ ggh4x::facet_grid2(~level , 
@@ -16,7 +17,8 @@ barchart.percentage.neutral.contig.gene <- ggplot(data = dat.figS3.barchart.abun
   )+   
   labs(
     y = "Percentage (%)") +
-  geom_text(data = c, aes(label = value), position = position_stack(vjust = 0.5)) +  # Add text labels
+  geom_text(data = dat.figS3.barchart.abundance.occurrence.gene.contigs, 
+            aes(label = value), position = position_stack(vjust = 0.5)) +  # Add text labels
   #  scale_fill_manual(values = c("sediment" = "#747070ff",  "water" = "#31b2e6ff",
   #                               "sewage" = "#c88b5cff", "none" = "grey80"), )+
   xlab("")+ 
@@ -33,3 +35,4 @@ barchart.percentage.neutral.contig.gene <- ggplot(data = dat.figS3.barchart.abun
         legend.key = NULL,
         legend.position = "bottom",
         axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
+)
