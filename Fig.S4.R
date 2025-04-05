@@ -1,6 +1,6 @@
 library(ggplot2)
 
-dat.figS4.heatmp.cor.all
+dat.figS4.heatmp.cor.all <- read.csv("dat.figS4.heatmp.cor.all.csv")
 ggplot(dat.figS4.heatmp.cor.all[dat.figS4.heatmp.cor.all$var2 %in% c("Sewage", "Sediment", "Water"), ],
        aes(x = var1, y = var2, fill = cor)) +
   geom_tile(color = "white")+ 
