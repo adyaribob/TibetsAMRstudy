@@ -1,7 +1,10 @@
+library(ggplo2)
 
 
-dat.figS2.feast.barchart.water <- water
+dat.figS2.feast.barchart.water <- read.csv("dat.figS2.feast.barchart.water.csv")
+dat.figS2.feast.barchart.sediment <- read.csv("dat.figS2.feast.barchart.sediment.csv")
 
+(
 plot.feast.genes.water <- ggplot() + 
   geom_bar(data = dat.figS2.feast.barchart.water,
            mapping = aes(x = site, y = value, fill = variable), color = "black",
@@ -28,9 +31,9 @@ plot.feast.genes.water <- ggplot() +
     legend.key = NULL,
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 0.5, angle = 90))
+)
 
-
-plot.feast.genes.sediment <- ggplot() + 
+(plot.feast.genes.sediment <- ggplot() + 
   geom_bar(data = dat.figS2.feast.barchart.sediment,
            mapping = aes(x = site, y = value, fill = variable), color = "black",
            stat = "identity",position = "stack")+
@@ -56,9 +59,8 @@ plot.feast.genes.sediment <- ggplot() +
     legend.key = NULL,
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 0.5, angle = 90))
+)
 
-
-
-plot_grid(plot.feast.genes.water, plot.feast.genes.sediment,  align = "V", cols = 1,
+cowplot::plot_grid(plot.feast.genes.water, plot.feast.genes.sediment,  align = "V", cols = 1,
           rel_widths = c(1, 1),
-          rel_heights = c(1, 1)
+          rel_heights = c(1, 1))
