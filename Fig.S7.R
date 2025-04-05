@@ -1,9 +1,9 @@
 
 library(ggplot2)
 ### a ####
-dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.water
-dat.figS7.barchart.euk.per.module.water
-dat.figS7.heatmap.cor.subdivision.contigs.water
+dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.water <- read.csv("dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.water.csv")
+dat.figS7.barchart.euk.per.module.water <- read.csv("dat.figS7.barchart.euk.per.module.water.csv")
+dat.figS7.heatmap.cor.subdivision.contigs.water <- read.csv("dat.figS7.heatmap.cor.subdivision.contigs.water.csv")
 
 barchart.up <- dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.water %>% 
   group_by(split) %>% summarise(n = n())
@@ -101,10 +101,11 @@ plot_grid(
   nrow = 2, ncol = 2, rel_widths = c(1.5 ,0.3), rel_heights = c(0.3, 1.5)
 )
 
-### a ####
-dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.sediment
-dat.figS7.barchart.euk.per.module.sediment
-dat.figS7.heatmap.cor.subdivision.contigs.sediment
+### b ####
+dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.sediment <- read.csv("dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity.sediment.csv")
+dat.figS7.barchart.euk.per.module.sediment <- read.csv("dat.figS7.barchart.euk.per.module.sediment.csv")
+dat.figS7.heatmap.cor.subdivision.contigs.sediment <- read.csv("dat.figS7.heatmap.cor.subdivision.contigs.sediment.csv")
+
 
 barchart.up <- dat.figS7.barchart.contigs.number.based.on.neutral.lefse.pathogenicity %>% 
   group_by(split) %>% summarise(n = n())
@@ -181,7 +182,6 @@ right <- ggplot(data = barchart.right, aes(x = module.from, y = n)) +
         axis.ticks.x = element_blank(), axis.text.y = element_blank(), 
         axis.title.y = element_blank(), axis.ticks.y= element_blank(),
         legend.position="none")  +coord_flip()
-right
 
 up <- ggplot(data = barchart.up, aes(x = split, y = n)) + 
   geom_bar(stat = "identity") + ylab("") + 
@@ -193,9 +193,8 @@ up <- ggplot(data = barchart.up, aes(x = split, y = n)) +
         axis.ticks.x = element_blank(), axis.text.y = element_blank(), 
         axis.title.y = element_blank(), axis.ticks.y= element_blank(),
         legend.position="none") 
-up
 
-plot_grid(
+cowplot::plot_grid(
   up, ggplot(), 
   hm.clean, right, 
   byrow = TRUE,
@@ -204,7 +203,6 @@ plot_grid(
 
 
 ##### c ######
-dat.figS7.heatmap.cor.subdivision.contigs
 ggplot(dat.figS7.heatmap.cor.subdivision.contigs, 
                                                aes(x = group, y = column, fill = mean)) +
   geom_tile(aes(x = group, y = column, ,
