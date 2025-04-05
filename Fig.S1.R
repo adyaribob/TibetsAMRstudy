@@ -1,7 +1,8 @@
-
+library(ggpubr)
+""
 ##### water ####
 ##### MGE correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_mge0.5_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("D:/.../sinkwater_sourceinfsediment_mge_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
 
@@ -18,7 +19,7 @@ result <- reshape::melt(feast.contribution.water)
 result$gene <- "MGEs"
 
 ##### ARGs correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("....sinkwater_sourceinfsediment_arg_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
 
@@ -35,7 +36,7 @@ result2 <- reshape::melt(feast.contribution.water)
 result2$gene <- "ARGs"
 
 ##### VFGs correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_vf_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("....sinkwater_sourceinfsediment_vf_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
 
@@ -56,7 +57,7 @@ result4$media <- "water"
 
 ##### sediment ####
 ##### MGE correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_mge0.5_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("....sinksediment_sourceinfwater_mge_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(a))
 
@@ -72,7 +73,7 @@ result <- reshape::melt(feast.contribution.water)
 result$gene <- "MGEs"
 
 ##### ARGs correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("....sinksediment_sourceinfwater_arg_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(a))
 
@@ -88,7 +89,7 @@ result2 <- reshape::melt(feast.contribution.water)
 result2$gene <- "ARGs"
 
 ##### VFGs correlation to FEAST source track water ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_vf_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("....sinksediment_sourceinfwater_vf_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(a))
 
@@ -122,9 +123,7 @@ items <- c("Sewage", "Water", "Unknown")
 pairs <- combn(items, 2, simplify = FALSE)
 result6$media <- factor(result6$media, levels = c("water", "sediment"))
 
-dat.figS1.feast.source.proportion.boxplot.water<- result6
-write.csv(dat.figS1.feast.source.proportion.boxplot.water, "dat.figS1.feast.source.proportion.boxplot.water.csv", col.names = FALSE)
-
+dat.figS1.feast.source.proportion.boxplot.water <- read.csv("dat.figS1.feast.source.proportion.boxplot.water.csv")
 ggplot(dat.figS1.feast.source.proportion.boxplot.water,  
        aes(x = variable, y = value, fill = variable)) + 
   geom_boxplot(outlier.size = 0.5, linewidth = 0.1) + 
@@ -132,10 +131,6 @@ ggplot(dat.figS1.feast.source.proportion.boxplot.water,
   theme_classic()+ ggh4x::facet_grid2(rows = vars(media), cols = vars(gene), scales = "free", independent = "y")+
   stat_compare_means(label = "p.signif", size = 5, hide.ns = TRUE,  vjust = 0.4, 
                      comparisons = pairs )+
-  #scale_y_continuous(
-  #  limits = c(0, 1.4),          # Set y-axis range
-  #  breaks = seq(0, 1, 0.2)    # Set labels at intervals of 0.2
-  #)+   
   labs(
     y = "FEAST source proportion") + 
   scale_fill_manual(values = c("Sediment" = "#747070ff",  "Water" = "#31b2e6ff",
@@ -151,8 +146,6 @@ ggplot(dat.figS1.feast.source.proportion.boxplot.water,
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))+
   theme_classic()
-
-
 
 ggplot(filter(dat.figS1.feast.source.proportion.boxplot.water, variable == "Sewage"),  
        aes(x = media, y = value), fill = "#c88b5cff") + 
@@ -172,11 +165,6 @@ ggplot(filter(dat.figS1.feast.source.proportion.boxplot.water, variable == "Sewa
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
 
-
-
-
-dat.figS1.corplot.abundance.sewage.source.proportion[1:4,]
-write.csv(dat.figS1.corplot.abundance.sewage.source.proportion, "dat.figS1.corplot.abundance.sewage.source.proportion.csv", col.names = FALSE)
 ggplot(dat.figS1.corplot.abundance.sewage.source.proportion[dat.figS1.corplot.abundance.sewage.source.proportion$variable == "Sewage", ], 
        aes(x = value, y = total, color = variable)) + 
   geom_point(size = 2, alpha = 0.7) +
@@ -199,6 +187,7 @@ ggplot(dat.figS1.corplot.abundance.sewage.source.proportion[dat.figS1.corplot.ab
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
 
+dat.figS1.boxplot.cor.sewagefeast.with.sewagesourceproportion <- read.csv("dat.figS1.boxplot.cor.sewagefeast.with.sewagesourceproportion.csv")
 
 ggplot(dat.figS1.boxplot.cor.sewagefeast.with.sewagesourceproportion[dat.figS1.boxplot.cor.sewagefeast.with.sewagesourceproportion$from == "sewage.FEAST" , ],  
        aes(x = lefse, y = Correlation, fill = lefse)) + 
