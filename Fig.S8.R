@@ -1,7 +1,6 @@
 
+dat.figS8.boxplot.abundance.occurrence.gene.contig <- read.csv("dat.figS8.boxplot.abundance.occurrence.gene.contig.csv")
 
-
-dat.figS8.boxplot.abundance.occurrence.gene.contig 
 ggplot(dat.figS8.boxplot.abundance.occurrence.gene.contig,  aes(x = x, y = Occurrences, fill = media)) + 
   geom_boxplot(outlier.size = 0.5, linewidth = 0.1) + 
   #scale_x_discrete(expand = c(0.15, 0.05)) +
