@@ -1,9 +1,9 @@
+library(ggplot2)
 
-dat.figS6.neutral.model <- plot.neutral.contig$data
-dat.figS6.neutral.model.R2 <- plot.neutral.contig$layers[[5]]$data
+dat.figS6.neutral.model <- read.csv("dat.figS6.neutral.model.csv")
+dat.figS6.neutral.model.R2 <- read.csv("dat.figS6.neutral.model.R2.csv")
 
-
-plot.neutral.contig <- ggplot(dat.figS6.neutral.model, aes(x=log10(p), y=freq))+
+(plot.neutral.contig <- ggplot(dat.figS6.neutral.model, aes(x=log10(p), y=freq))+
   geom_point(aes(color = lefse),alpha=0.5, size=1.5)+
   geom_line(aes(x=log10(p), y=freq.pred),
             color="blue",linetype="solid",size=0.7)+
@@ -35,9 +35,9 @@ plot.neutral.contig <- ggplot(dat.figS6.neutral.model, aes(x=log10(p), y=freq))+
     legend.position = "bottom",
     axis.text.x = ggtext::element_markdown(size = 12 ,
                                            face = "plain", hjust = 1, vjust = 0.4))
+)
 
-
-figS6.neutral.contigs.barchart <- 
+(figS6.neutral.contigs.barchart <- 
   ggplot(dat.figS6.neutral.model.barchart, aes(x = lefse, y = n, fill = upper_neutral_under)) +
   geom_bar(stat = "identity", position = position_stack()) +
   ylab("Number of contigs") + xlab("") + 
@@ -65,4 +65,4 @@ figS6.neutral.contigs.barchart <-
         legend.key = NULL,
         legend.position = "bottom",
         axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
-
+)
