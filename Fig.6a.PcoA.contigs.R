@@ -1,5 +1,11 @@
 library(phyloseq)
 library(ggplot2)
+
+#### phyloseq object of contigs ####
+phy.contig.argmge
+phy.contig.argvf
+phy.contig.argmgevf
+
 a <- subset_samples(phy.contig.argmge)
 ord.a <- ordinate(physeq = a, method = "PCoA") ## nongut
 plot_ordination(ordination = ord.a, physeq = a, 
@@ -10,7 +16,6 @@ data <- merge(data, meta.tab)
 data1 <- data
 data1$perc1 <- 20.2
 data1$perc2 <- 11.7
-
 
 a <- subset_samples(phy.contig.argvf)
 ord.a <- ordinate(physeq = a, method = "PCoA") ## nongut
@@ -37,11 +42,11 @@ data1$facet <- "ARG-MGE\ncarrying contigs"
 data2$facet <- "ARG-VFG\ncarrying contigs"
 data3$facet <- "ARG-MGE-VFG\ncarrying contigs"
 
-data.pcoa.water.sd.contigs <- rbind(data1, data2, data3)
-data.pcoa.water.sd.contigs$type <- factor(data.pcoa.water.sd.contigs$type, levels = c("IF","WA","SD"), labels = c("Sewage", "Water", "Sediment"))
-write.csv(data.pcoa.water.sd.contigs,"data.pcoa.water.sd.contigs.fig6.csv", col.names = FALSE)
+dat.fig6a.pcoa.water.sd.contigs  <- rbind(data1, data2, data3)
+dat.fig6a.pcoa.water.sd.contigs$type <- factor(dat.fig6a.pcoa.water.sd.contigs$type, levels = c("IF","WA","SD"), labels = c("Sewage", "Water", "Sediment"))
+dat.fig6a.pcoa.water.sd.contigs <- read.csv("dat.fig6a.pcoa.water.sd.contigs.csv")
 
-fig.pcoa.contigs <- ggplot(data = data.pcoa.water.sd.contigs) +
+(fig.6a.pcoa.contigs <- ggplot(data = dat.fig6a.pcoa.water.sd.contigs) +
   geom_point(mapping = aes(x = Axis.1, y = Axis.2, color = type), 
              size  = 3.4, alpha = 0.8)+ facet_wrap(~domain, scales = "free") + 
   scale_color_manual(values = c("Sediment" = "#747070ff",  "Water" = "#31b2e6ff",
@@ -58,4 +63,4 @@ fig.pcoa.contigs <- ggplot(data = data.pcoa.water.sd.contigs) +
         strip.text = element_text(size = 12),
         axis.ticks = element_blank(),
         axis.title.x = element_blank(),
-        panel.border = element_rect(color = "black", fill = NA, size = 1))
+        panel.border = element_rect(color = "black", fill = NA, size = 1)))
