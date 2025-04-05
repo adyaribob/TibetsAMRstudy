@@ -2,7 +2,7 @@ library(phyloseq)
 library(dplyr)
 library(Hmisc)
 
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_allcontig2_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("D:/.../sinkwater_sourceinfsediment_allcontig_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
 
@@ -14,13 +14,9 @@ names(sediment) == names(sewage)
 feast.contribution.water <- data.frame(sediment = sediment, sewage = sewage, 
                                        unknown = unknown)
 feast.contribution.water$SampleID <- rownames(feast.contribution.water)
-
 feast.contribution.water <- feast.contribution.water[rownames(dat.contig.all.non.redundant.wa),]
-dim(dat.contig.all.non.redundant.wa)
-dim(feast.contribution.water)
 rownames(dat.contig.all.non.redundant.wa) == rownames(feast.contribution.water)
 
-dat.contig.all.non.redundant.wa
 d <- dat.contig.all.non.redundant.wa
 a <- d
 a[a > 0 ] <- 1
@@ -43,7 +39,7 @@ result$lefse <- dat.res.lefse.contig.remove.redundant$Group[match(result$name, d
 result$media <-"water"
 
 ##### sediment  ######
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("D:/.../sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(a))
 
@@ -56,10 +52,7 @@ feast.contribution.water <- data.frame(water = water, sewage = sewage,
                                        unknown = unknown)
 feast.contribution.water$SampleID <- rownames(feast.contribution.water)
 feast.contribution.water <- feast.contribution.water[rownames(dat.contig.all.non.redundant.sd),]
-dim(dat.contig.all.non.redundant.sd)
-dim(feast.contribution.water)
 rownames(dat.contig.all.non.redundant.sd) == rownames(feast.contribution.water)
-
 
 d <- dat.contig.all.non.redundant.sd
 a <- d
@@ -97,8 +90,7 @@ res$lefse[is.na(res$lefse)] <- "None"
 dat.cor.contig.feast.sewage.proportion <- res
 res$lefse <- factor(res$lefse, levels = c("IF","WA","SD","None"), labels = c("Sewage","Water","Sediment","None"))
 res$media <- factor(res$media, levels = c("water", "sediment"))
-
-res$lefse %>% unique
+dat.fig.S5.boxplot.cor.contig.lefse.sewage.feast <- res
 
 library(ggpubr)
 # Define the list of items
@@ -106,8 +98,8 @@ items <- c("Sewage", "Water", "Sediment", "None")
 
 # Generate all non-redundant pairs
 pairs <- combn(items, 2, simplify = FALSE)
-plot.boxplot.cor.contig.lefse.sewage.feast$data
-plot.boxplot.cor.contig.lefse.sewage.feast <- ggplot(res,  
+
+(fig.S5.boxplot.cor.contig.lefse.sewage.feast <- ggplot(dat.fig.S5.boxplot.cor.contig.lefse.sewage.feast,  
                                                      aes(x = lefse, y = Correlation, fill = lefse)) + 
   geom_boxplot(outlier.size = 0.5, linewidth = 0.1) + 
   scale_x_discrete(expand = c(0.15, 0.05)) +
@@ -137,10 +129,10 @@ plot.boxplot.cor.contig.lefse.sewage.feast <- ggplot(res,
     strip.background = element_rect(size = 0.5),
     legend.key = NULL,
     legend.position = "bottom",
-    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
+    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45)))
 
 
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_allcontig2_source_contributions_matrix.txt", row.names=1)
+a <- read.delim("D:/.../sinkwater_sourceinfsediment_allcontig_source_contributions_matrix.txt", row.names=1)
 colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
 rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
 
@@ -155,7 +147,7 @@ a$SampleID <- rownames(a)
 
 a$media <- "water"
 
-b <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
+b <- read.delim("D:/.../sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
 colnames(b) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(b))
 rownames(b) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(b))
 
@@ -182,9 +174,10 @@ c <- rbind(reshape::melt(a),
 c$media <- factor(c$media, levels = c("water","sediment"))
 c$variable %>% unique
 c$variable <- factor(c$variable, levels = c("sewage","water", "unknown"))
+dat.plot.S5.boxplot.feast.contigs <- c
 library(ggpubr)
 
-plot.boxplot.feast.contig <- ggplot(c, aes(x = variable, y = value, fill = variable)) + 
+(fig.S5.boxplot.feast.contig <- ggplot(dat.fig.S5.boxplot.feast.contigs, aes(x = variable, y = value, fill = variable)) + 
   geom_boxplot(outlier.size = 0.5, linewidth = 0.1) + 
   scale_x_discrete(expand = c(0.15, 0.2)) +
   theme_classic()+ ggh4x::facet_grid2(cols = vars(media), scales = "free", independent = "y")+
@@ -204,9 +197,10 @@ plot.boxplot.feast.contig <- ggplot(c, aes(x = variable, y = value, fill = varia
     strip.background = element_rect(size = 0.5),
     legend.key = NULL,
     legend.position = "bottom",
-    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
+    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45)))
 
-plot.boxplot.feast.contig2 <- ggplot(c[c$variable == "sewage", ], aes(x = media, y = value, fill = variable)) + 
+(fig.S5.boxplot.feast.contig2 <- ggplot(dat.fig.S5.boxplot.feast.contigs[dat.fig.S5.boxplot.feast.contigs$variable == "sewage", ], 
+                                     aes(x = media, y = value, fill = variable)) + 
   geom_boxplot(outlier.size = 0.5, linewidth = 0.1) + 
   scale_x_discrete(expand = c(0.3, 0.3)) +
   #theme_classic()+ ggh4x::facet_grid2(cols = vars(media), scales = "free", independent = "y")+
@@ -225,20 +219,50 @@ plot.boxplot.feast.contig2 <- ggplot(c[c$variable == "sewage", ], aes(x = media,
     strip.background = element_rect(size = 0.5),
     legend.key = NULL,
     legend.position = "bottom",
-    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
+    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45)))
 
 library(cowplot)
-plot.boxplot.feast.contig.combined <- plot_grid(
-  plot.boxplot.feast.contig, plot.boxplot.feast.contig2, 
+fig.S5.boxplot.feast.contig.combined <- plot_grid(
+  plot.S5.boxplot.feast.contig, plot.S5.boxplot.feast.contig2, 
   ncol = 2,            # Arrange in a single row
   rel_widths = c(2, 1) # Set the width ratio
 )
 
+
+a <- read.delim("D:/.../sinkwater_sourceinfsediment_allcontig_source_contributions_matrix.txt", row.names=1)
+colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
+rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
+sediment <- rowSums(a[,grepl(pattern = "SD", x = colnames(a))])
+unknown <- a[,grepl(pattern = "Unknown", x = colnames(a))]
+sewage <- rowSums(a[,!grepl(pattern = "SD|Unknown", x = colnames(a))])
+names(water) == names(sewage)
+a <- data.frame(sediment = sediment, sewage = sewage, 
+                unknown = unknown)
+a$SampleID <- rownames(a)
+a$media <- "water"
+
+b <- read.delim("D:/.../sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
+colnames(b) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(b))
+rownames(b) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(b))
+water <- rowSums(b[,grepl(pattern = "WA", x = colnames(b))])
+unknown <- b[,grepl(pattern = "Unknown", x = colnames(b))]
+sewage <- rowSums(b[,!grepl(pattern = "WA|Unknown", x = colnames(b))])
+names(water) == names(sewage)
+b <- data.frame(water = water, sewage = sewage, 
+                unknown = unknown)
+b$SampleID <- rownames(b)
+a$media <- "water"
+b$media <- "sediment"
+a$total.contig  <- rowSums(dat.contig.all.non.redundant.wa[rownames(a),])
+b$total.contig  <- rowSums(dat.contig.all.non.redundant.sd[rownames(b),])
+
 c <- rbind(a[,c("sewage", "media", "total.contig")],
            b[,c("sewage", "media", "total.contig")])
-c[1:5,]
 c$media <- factor(c$media, levels = c("water","sediment"))
-plot.cor.sewage.feast.total.contig <- ggplot(c, aes(x = sewage, y = total.contig)) + 
+dat.fig.S5.corplot.sewage.source.proportion.totalabundance.contigs <- c
+
+(fig.S5.cor.sewage.feast.total.contig <- ggplot(dat.fig.S5.corplot.sewage.source.proportion.totalabundance.contigs, 
+                                             aes(x = sewage, y = total.contig)) + 
   geom_point(size = 2, alpha = 0.7, color = "#c88b5cff") +
   theme_classic()+ 
   ggh4x::facet_grid2(cols = vars(media),  scales = "free", independent = "y")+
@@ -260,148 +284,6 @@ plot.cor.sewage.feast.total.contig <- ggplot(c, aes(x = sewage, y = total.contig
     strip.background = element_rect(size = 0.5),
     legend.key = NULL,
     legend.position = "bottom",
-    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45))
+    axis.text.x = ggtext::element_markdown(size = 12 ,face = "plain", hjust = 1, vjust = 1, angle = 45)))
 
 
-plot_grid(
-  plot.boxplot.feast.contig.combined, plot.boxplot.cor.contig.lefse.sewage.feast,
-  ncol = 1, nrow = 2, rel_heights = c(0.5, 0.5)
-)
-
-
-a <- tax_table(subset_taxa(phy.contig.argmge, !contig %in% taxa_names(phy.contig.argmgevf))) %>% as.matrix %>% as.data.frame %>% filter(kindom != "") %>% mutate(contiggroup = "argmge")
-b <- tax_table(subset_taxa(phy.contig.argvf, !contig %in% taxa_names(phy.contig.argmgevf))) %>% as.matrix %>% as.data.frame %>% filter(kindom != "") %>% mutate(contiggroup = "argvg")
-c <- tax_table(phy.contig.argmgevf) %>% as.matrix %>% as.data.frame %>% filter(kindom != "")  %>% mutate(contiggroup = "argmgevf")
-arg_mge_vf_contig_anno_240828$pathogen <- c$pathogen[match(arg_mge_vf_contig_anno_240828$contig, c$contig)]
-arg_mge_vf_contig_anno_240828$species <- c$species[match(arg_mge_vf_contig_anno_240828$contig, c$contig)]
-arg_mge_contig_anno_240828$pathogen <- a$pathogen[match(arg_mge_contig_anno_240828$contig, a$contig)]
-arg_mge_contig_anno_240828$species <- a$species[match(arg_mge_contig_anno_240828$contig, a$contig)]
-arg_vf_contig_anno_240828$pathogen <- b$pathogen[match(arg_vf_contig_anno_240828$contig, b$contig)]
-arg_vf_contig_anno_240828$species <- b$species[match(arg_vf_contig_anno_240828$contig, b$contig)]
-
-#####  #####
-##### sig cor ####
-#### water #####
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinkwater_sourceinfsediment_allcontig2_source_contributions_matrix.txt", row.names=1)
-colnames(a) <- gsub(pattern = "_Inf|_Sediment", replacement = "", x = colnames(a))
-rownames(a) <- gsub(pattern = "_Water", replacement = "", x = rownames(a))
-
-sediment <- rowSums(a[,grepl(pattern = "SD", x = colnames(a))])
-unknown <- a[,grepl(pattern = "Unknown", x = colnames(a))]
-sewage <- rowSums(a[,!grepl(pattern = "SD|Unknown", x = colnames(a))])
-
-names(sediment) == names(sewage)
-a <- data.frame(sediment = sediment, sewage = sewage, 
-                unknown = unknown)
-a$SampleID <- rownames(a)
-
-a <- a[rownames(dat.contig.all.non.redundant.wa),]
-
-rownames(dat.contig.all.non.redundant.wa) == rownames(a)
-d <- dat.contig.all.non.redundant.wa
-
-b <- d
-b[b > 0 ] <- 1
-dim(d)
-d <- d[,colSums(b) >= 6]
-dim(d)
-d$SampleID <- NULL
-rownames(d) == rownames(a)
-table1 <- a
-table2 <- d
-table1$SampleID <- NULL
-
-rownames(table1) == rownames(dat.contig.all.non.redundant.wa)
-table1$total.contig <- rowSums(dat.contig.all.non.redundant.wa)
-
-cor_matrix <- cor(as.matrix(table1), as.matrix(table2))
-# Compute p-values
-n <- nrow(table1)  # Number of observations
-t_stats <- cor_matrix * sqrt((n - 2) / (1 - cor_matrix^2))
-p_matrix <- 2 * pt(-abs(t_stats), df = n - 2)
-
-# Convert results to data frame
-library(tidyr)
-result <- as.data.frame(as.table(cor_matrix)) %>%
-  rename(Var1 = Var1, Var2 = Var2, correlation = Freq) %>%
-  mutate(p_value = as.vector(p_matrix))
-
-# View results
-head(result)
-result$neutral <- dat.neutral.water.contig.all$upper_neutral_under[match(result$Var2,
-                                                                         rownames(dat.neutral.water.contig.all))]
-result$lefse <- dat.res.lefse.contig.remove.redundant$Group[match(result$Var2, 
-                                                                  dat.res.lefse.contig.remove.redundant$group)]
-result$pathogen <- tax.contig$pathogen[match(result$Var2, tax.contig$contig)]
-
-wide_df <- result %>%
-  pivot_wider(
-    names_from = Var1,
-    values_from = c(correlation, p_value)
-  )
-wide_df$media <- "water"
-list.cor.feast.with.totalabundance.and.feast  <- list(water = wide_df)
-
-
-#### ####
-#### sediment #####
-a <- read.delim("D:/rproject2/Tibet_2023/Tibet2023/feast_ARGgene_water/sinksediment_sourceinfwater_allcontig_source_contributions_matrix.txt", row.names=1)
-colnames(a) <- gsub(pattern = "_Inf|_Water", replacement = "", x = colnames(a))
-rownames(a) <- gsub(pattern = "_Sediment", replacement = "", x = rownames(a))
-
-water <- rowSums(a[,grepl(pattern = "WA", x = colnames(a))])
-unknown <- a[,grepl(pattern = "Unknown", x = colnames(a))]
-sewage <- rowSums(a[,!grepl(pattern = "WA|Unknown", x = colnames(a))])
-
-names(water) == names(sewage)
-a <- data.frame(water = water, sewage = sewage, 
-                unknown = unknown)
-a$SampleID <- rownames(a)
-a <- a[rownames(a),]
-
-a <- a[rownames(dat.contig.all.non.redundant.sd),]
-
-rownames(dat.contig.all.non.redundant.sd) == rownames(a)
-d <- dat.contig.all.non.redundant.sd
-b <- d
-b[b > 0 ] <- 1
-dim(d)
-d <- d[,colSums(b) >= 6]
-dim(d)
-rownames(d) == rownames(a)
-table1 <- a
-table2 <- d
-table1$SampleID <- NULL
-rownames(table1) == rownames(dat.contig.all.non.redundant.sd)
-table1$total.contig <- rowSums(dat.contig.all.non.redundant.sd)
-
-cor_matrix <- cor(as.matrix(table1), as.matrix(table2))
-# Compute p-values
-n <- nrow(table1)  # Number of observations
-t_stats <- cor_matrix * sqrt((n - 2) / (1 - cor_matrix^2))
-p_matrix <- 2 * pt(-abs(t_stats), df = n - 2)
-
-# Convert results to data frame
-library(tidyr)
-result <- as.data.frame(as.table(cor_matrix)) %>%
-  rename(Var1 = Var1, Var2 = Var2, correlation = Freq) %>%
-  mutate(p_value = as.vector(p_matrix))
-
-# View results
-head(result)
-result$neutral <- dat.neutral.sediment.contig.all$upper_neutral_under[match(result$Var2,
-                                                                            rownames(dat.neutral.sediment.contig.all))]
-result$lefse <- dat.res.lefse.contig.remove.redundant$Group[match(result$Var2, 
-                                                                  dat.res.lefse.contig.remove.redundant$group)]
-result$pathogen <- tax.contig$pathogen[match(result$Var2, tax.contig$contig)]
-result[1:5,]
-wide_df <- result %>%
-  pivot_wider(
-    names_from = Var1,
-    values_from = c(correlation, p_value)
-  )
-wide_df$media <- "sediment"
-list.cor.feast.with.totalabundance.and.feast$sediment <- wide_df
-list.cor.feast.with.totalabundance.and.feast$sediment
-saveRDS(list.cor.feast.with.totalabundance.and.feast, "list.cor.feast.with.totalabundance.and.feast.rds")
-list.cor.feast.with.totalabundance.and.feast$water
